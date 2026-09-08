@@ -1,16 +1,34 @@
-# React + Vite
+# OctoFit Tracker — presentation tier
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19 + Vite + React Router + Bootstrap. Runs on port `5173`.
 
-Currently, two official plugins are available:
+## Environment variables
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+`VITE_CODESPACE_NAME` **must be defined** so the app can build the API base URL:
 
-## React Compiler
+```text
+https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/[component]/
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Create `octofit-tracker/frontend/.env.local` (copy from `.env.example`):
 
-## Expanding the ESLint configuration
+```bash
+echo "VITE_CODESPACE_NAME=$CODESPACE_NAME" > octofit-tracker/frontend/.env.local
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+If `VITE_CODESPACE_NAME` is unset, [src/api.js](src/api.js) falls back to
+`http://localhost:8000` instead of producing a broken `https://undefined-8000…` URL.
+
+Vite only exposes variables at build/start time, so restart the dev server after editing `.env.local`.
+
+## Commands
+
+```bash
+npm install --prefix octofit-tracker/frontend
+npm run --prefix octofit-tracker/frontend dev
+```
+
+## Routes
+
+`/activities`, `/leaderboard`, `/teams`, `/users`, `/workouts` — each fetches
+`/api/<resource>/` and accepts either a plain array or a paginated `{ results: [...] }` response.

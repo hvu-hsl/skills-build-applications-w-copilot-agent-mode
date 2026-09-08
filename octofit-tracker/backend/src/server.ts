@@ -3,6 +3,9 @@ import cors from 'cors';
 import db from './config/database.js';
 import User from './models/User.js';
 import Activity from './models/Activity.js';
+import Team from './models/Team.js';
+import Leaderboard from './models/Leaderboard.js';
+import Workout from './models/Workout.js';
 
 const port = Number(process.env.PORT) || 8000;
 const codespaceName = process.env.CODESPACE_NAME;
@@ -27,6 +30,21 @@ app.get('/api/users', async (_request, response) => {
 app.get('/api/activities', async (_request, response) => {
   const activities = await Activity.find().populate('user', 'name email').lean();
   response.json(activities);
+});
+
+app.get('/api/teams', async (_request, response) => {
+  const teams = await Team.find().populate('members', 'name email').lean();
+  response.json(teams);
+});
+
+app.get('/api/leaderboard', async (_request, response) => {
+  const entries = await Leaderboard.find().sort({ points: -1 }).lean();
+  response.json(entries);
+});
+
+app.get('/api/workouts', async (_request, response) => {
+  const workouts = await Workout.find().lean();
+  response.json(workouts);
 });
 
 db.once('open', () => {
