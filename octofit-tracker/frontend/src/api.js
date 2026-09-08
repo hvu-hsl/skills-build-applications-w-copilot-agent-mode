@@ -1,0 +1,6 @@
+// VITE_CODESPACE_NAME must be defined (see .env.local) when running in GitHub Codespaces.
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+
+export const API_BASE_URL = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : 'http://localhost:8000';
