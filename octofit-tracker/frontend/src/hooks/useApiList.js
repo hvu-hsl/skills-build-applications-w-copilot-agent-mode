@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchList } from '../api';
 
-export function useApiList(resource) {
+export function useApiList(endpoint) {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -9,7 +9,7 @@ export function useApiList(resource) {
   useEffect(() => {
     let active = true;
 
-    fetchList(resource)
+    fetchList(endpoint)
       .then((data) => {
         if (active) setItems(data);
       })
@@ -23,7 +23,7 @@ export function useApiList(resource) {
     return () => {
       active = false;
     };
-  }, [resource]);
+  }, [endpoint]);
 
   return { items, error, loading };
 }

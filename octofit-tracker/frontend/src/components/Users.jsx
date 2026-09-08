@@ -1,8 +1,11 @@
+import { API_BASE_URL } from '../api';
 import { useApiList } from '../hooks/useApiList';
 import DataState from './DataState';
 
+const USERS_ENDPOINT = `${API_BASE_URL}/api/users/`;
+
 export default function Users() {
-  const { items, error, loading } = useApiList('users');
+  const { items, error, loading } = useApiList(USERS_ENDPOINT);
 
   return (
     <section>

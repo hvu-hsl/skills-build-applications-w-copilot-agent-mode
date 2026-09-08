@@ -1,8 +1,11 @@
+import { API_BASE_URL } from '../api';
 import { useApiList } from '../hooks/useApiList';
 import DataState from './DataState';
 
+const TEAMS_ENDPOINT = `${API_BASE_URL}/api/teams/`;
+
 export default function Teams() {
-  const { items, error, loading } = useApiList('teams');
+  const { items, error, loading } = useApiList(TEAMS_ENDPOINT);
 
   return (
     <section>

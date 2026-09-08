@@ -1,8 +1,11 @@
+import { API_BASE_URL } from '../api';
 import { useApiList } from '../hooks/useApiList';
 import DataState from './DataState';
 
+const ACTIVITIES_ENDPOINT = `${API_BASE_URL}/api/activities/`;
+
 export default function Activities() {
-  const { items, error, loading } = useApiList('activities');
+  const { items, error, loading } = useApiList(ACTIVITIES_ENDPOINT);
 
   return (
     <section>

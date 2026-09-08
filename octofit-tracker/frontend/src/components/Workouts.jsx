@@ -1,8 +1,11 @@
+import { API_BASE_URL } from '../api';
 import { useApiList } from '../hooks/useApiList';
 import DataState from './DataState';
 
+const WORKOUTS_ENDPOINT = `${API_BASE_URL}/api/workouts/`;
+
 export default function Workouts() {
-  const { items, error, loading } = useApiList('workouts');
+  const { items, error, loading } = useApiList(WORKOUTS_ENDPOINT);
 
   return (
     <section>

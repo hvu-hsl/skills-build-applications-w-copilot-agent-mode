@@ -1,8 +1,11 @@
+import { API_BASE_URL } from '../api';
 import { useApiList } from '../hooks/useApiList';
 import DataState from './DataState';
 
+const LEADERBOARD_ENDPOINT = `${API_BASE_URL}/api/leaderboard/`;
+
 export default function Leaderboard() {
-  const { items, error, loading } = useApiList('leaderboard');
+  const { items, error, loading } = useApiList(LEADERBOARD_ENDPOINT);
 
   return (
     <section>
