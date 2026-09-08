@@ -1,9 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import db from './config/database.js';
-import { baseUrl, port } from './config/env.js';
 import User from './models/User.js';
 import Activity from './models/Activity.js';
+
+const port = Number(process.env.PORT) || 8000;
+const codespaceName = process.env.CODESPACE_NAME;
+const baseUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : `http://localhost:${port}`;
 
 const app = express();
 
@@ -29,3 +34,5 @@ db.once('open', () => {
     console.log(`OctoFit API listening on ${baseUrl}`);
   });
 });
+
+export { app, baseUrl, port };
