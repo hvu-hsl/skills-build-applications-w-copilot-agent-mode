@@ -1,11 +1,37 @@
-import { API_BASE_URL } from '../api';
-import { useApiList } from '../hooks/useApiList';
+import { useEffect, useState } from 'react';
 import DataState from './DataState';
 
-const TEAMS_ENDPOINT = `${API_BASE_URL}/api/teams/`;
+const TEAMS_ENDPOINT = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+  : 'http://localhost:8000/api/teams/';
 
 export default function Teams() {
-  const { items, error, loading } = useApiList(TEAMS_ENDPOINT);
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch(TEAMS_ENDPOINT)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        if (active) setItems(Array.isArray(data) ? data : (data?.results ?? []));
+      })
+      .catch((requestError) => {
+        if (active) setError(requestError.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <section>

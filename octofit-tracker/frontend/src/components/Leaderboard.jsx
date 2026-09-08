@@ -1,11 +1,37 @@
-import { API_BASE_URL } from '../api';
-import { useApiList } from '../hooks/useApiList';
+import { useEffect, useState } from 'react';
 import DataState from './DataState';
 
-const LEADERBOARD_ENDPOINT = `${API_BASE_URL}/api/leaderboard/`;
+const LEADERBOARD_ENDPOINT = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+  : 'http://localhost:8000/api/leaderboard/';
 
 export default function Leaderboard() {
-  const { items, error, loading } = useApiList(LEADERBOARD_ENDPOINT);
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch(LEADERBOARD_ENDPOINT)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        if (active) setItems(Array.isArray(data) ? data : (data?.results ?? []));
+      })
+      .catch((requestError) => {
+        if (active) setError(requestError.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <section>
