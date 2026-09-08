@@ -4,6 +4,7 @@ const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/o
 
 /**
  * Seed the octofit_db database with test data
+ * adding comment to check stuff in
  */
 async function seedDatabase() {
   try {
